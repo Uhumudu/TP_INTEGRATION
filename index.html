@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TP Intégration des Services 2</title>
+
+<style>
+/* ===== GENERAL ===== */
+:root{
+    --bg-dark: linear-gradient(135deg,#1e3c72,#2a5298);
+    --bg-light: linear-gradient(135deg,#f0f2f5,#c3cfe2);
+    --text-dark:#fff;
+    --text-light:#222;
+    --glass-dark: rgba(255,255,255,0.1);
+    --glass-light: rgba(255,255,255,0.6);
+    --accent: #00c6ff;
+}
+
+body{
+    margin:0;
+    font-family:'Segoe UI', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-dark);
+    transition:0.4s;
+}
+
+body.light-mode{
+    background: var(--bg-light);
+    color: var(--text-light);
+}
+
+/* ===== HEADER ===== */
+.header{
+    padding:20px;
+    backdrop-filter: blur(10px);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.logo{
+    width:60px;
+    animation:spin 10s linear infinite;
+}
+
+@keyframes spin{
+    100%{transform:rotate(360deg);}
+}
+
+.title-section h1{
+    font-size:24px;
+    margin:0;
+    animation:fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn{
+    0%{opacity:0; transform:translateY(-20px);}
+    100%{opacity:1; transform:translateY(0);}
+}
+
+.navbar ul{
+    display:flex;
+    list-style:none;
+    padding:0;
+    margin:10px 0 0 0;
+}
+
+.navbar li{
+    margin:0 15px;
+}
+
+.navbar a{
+    text-decoration:none;
+    color:inherit;
+    font-weight:bold;
+}
+
+#theme-toggle{
+    padding:8px 12px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+/* ===== SECTIONS ===== */
+.presentation, .info{
+    width:90%;
+    max-width:900px;
+    margin:20px auto;
+    padding:30px;
+    border-radius:20px;
+    backdrop-filter: blur(15px);
+    box-shadow:0 8px 32px rgba(0,0,0,0.2);
+    background: var(--glass-dark);
+    transition:0.4s;
+}
+
+body.light-mode .presentation, body.light-mode .info{
+    background: var(--glass-light);
+}
+
+/* ===== BUTTONS ===== */
+.btn{
+    display:block;
+    width:220px;
+    margin:20px auto 0 auto;
+    padding:12px;
+    text-align:center;
+    background: var(--accent);
+    color:white;
+    font-weight:bold;
+    border:none;
+    border-radius:25px;
+    cursor:pointer;
+    transition:0.3s;
+    text-decoration:none;
+}
+
+.btn:hover{
+    background:#009edb;
+    transform:scale(1.05);
+}
+
+/* ===== FOOTER ===== */
+footer{
+    text-align:center;
+    padding:15px;
+    margin-top:20px;
+    color:var(--text-dark);
+}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+    .header{
+        flex-direction:column;
+        align-items:center;
+        gap:10px;
+    }
+
+    .navbar ul{
+        flex-direction:column;
+        gap:10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="logo-section">
+        <img src="images/logo.jpg" alt="Logo établissement" class="logo">
+    </div>
+    <div class="title-section">
+        <h1>TP Intégration des Services 2</h1>
+    </div>
+    <button id="theme-toggle">🌙</button>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="presentation">
+    <h2>Présentation du Projet</h2>
+    <p>
+        Ce site web a été réalisé dans le cadre du TP d’Intégration des Services.
+        Il présente les informations académiques de l’étudiant et intègre
+        des services web modernes.
+    </p>
+</section>
+
+<section class="info">
+    <h2>Informations de l'étudiant</h2>
+    <p><strong>Nom :</strong> Moussa Ouhoumoud</p>
+    <p><strong>Filière :</strong> Gestion des Systèmes d'informations</p>
+    <p><strong>Niveau :</strong> BTS 2</p>
+    <p><strong>Établissement :</strong> Institut Universitaire de la Côte (IUC)</p>
+
+    <a href="contact.html" class="btn">Nous Contacter</a>
+</section>
+
+<footer>
+    <p>© 2026 - TP Intégration des Services 2</p>
+</footer>
+
+<script>
+const toggleBtn = document.getElementById("theme-toggle");
+const body = document.body;
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+function applySystemTheme() {
+    if(localStorage.getItem("theme")){
+        if(localStorage.getItem("theme")==="light"){
+            body.classList.add("light-mode");
+            toggleBtn.textContent="☀️";
+        } else {
+            body.classList.remove("light-mode");
+            toggleBtn.textContent="🌙";
+        }
+        return;
+    }
+    if(prefersDark.matches){
+        body.classList.remove("light-mode");
+        toggleBtn.textContent="🌙";
+    } else {
+        body.classList.add("light-mode");
+        toggleBtn.textContent="☀️";
+    }
+}
+applySystemTheme();
+
+toggleBtn.addEventListener("click", ()=>{
+    body.classList.toggle("light-mode");
+    if(body.classList.contains("light-mode")){
+        toggleBtn.textContent="☀️";
+        localStorage.setItem("theme","light");
+    } else {
+        toggleBtn.textContent="🌙";
+        localStorage.setItem("theme","dark");
+    }
+});
+
+prefersDark.addEventListener("change", applySystemTheme);
+</script>
+
+</body>
+</html>
